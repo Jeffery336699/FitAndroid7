@@ -27,15 +27,18 @@ public class FileProvider7 {
     }
 
 
-
+    /**
+     * file --> Uri(适配7.0)
+     */
     public static Uri getUriForFile24(Context context, File file) {
         Uri fileUri = android.support.v4.content.FileProvider.getUriForFile(context,
-                context.getPackageName() + ".android7.fileprovider",
-                file);
+                context.getPackageName() + ".android7.fileprovider",file);
         return fileUri;
     }
 
-
+    /**
+     * setDataAndType类型授权可以采用简便方式addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)形式
+     */
     public static void setIntentDataAndType(Context context,
                                             Intent intent,
                                             String type,
@@ -52,7 +55,9 @@ public class FileProvider7 {
         }
     }
 
-
+    /**
+     * setData类型授权可以采用简便方式addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)形式
+     */
     public static void setIntentData(Context context,
                                      Intent intent,
                                      File file,
@@ -68,7 +73,9 @@ public class FileProvider7 {
         }
     }
 
-
+    /**
+     * 详细授权过程,如果上述setData、setDataAndType简便方式没法用时，最终兜底方案
+     */
     public static void grantPermissions(Context context, Intent intent, Uri uri, boolean writeAble) {
 
         int flag = Intent.FLAG_GRANT_READ_URI_PERMISSION;
@@ -76,6 +83,7 @@ public class FileProvider7 {
             flag |= Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
         }
         intent.addFlags(flag);
+        // 给予能够处理该Intent的全部授权
         List<ResolveInfo> resInfoList = context.getPackageManager()
                 .queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
         for (ResolveInfo resolveInfo : resInfoList) {
